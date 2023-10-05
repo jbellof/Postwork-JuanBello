@@ -1,8 +1,7 @@
 package Lista;
 
 
-import Lista.Lector;
-import Lista.ListasTareas;
+
 import Lista.modelo.ListaTareas;
 import Lista.modelo.Tarea;
 

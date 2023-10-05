@@ -1,6 +1,6 @@
 package Lista;
 
-import Lista.modelo.ListaTareas;
+
 
 public class Main {
     public static void main(String[] args) {
