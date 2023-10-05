@@ -1,10 +1,6 @@
 package Lista;
-
-
-
 import Lista.modelo.ListaTareas;
 import Lista.modelo.Tarea;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

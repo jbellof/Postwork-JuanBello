@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.io.Serializable;
-public class ListaTareas implements Serializable {
+public class ListaTareas   implements Serializable {
     private String nombre;
     private final Date fechaCreacion;
     private List<Tarea> tareas = new ArrayList<>();
@@ -57,13 +57,7 @@ public class ListaTareas implements Serializable {
             System.out.println((i + 1) + ". " + tarea.getNombre());
         }
     }
-    public void imprimirNombresTareasEliminar() {
-        List<Tarea> tareas = obtenerTareas();
-        for (int i = 0; i < tareas.size(); i++) {
-            Tarea tarea = tareas.get(i);
-            System.out.println((i + 1) + ". " + tarea.getNombre());
-        }
-    }
+
 
 }
 

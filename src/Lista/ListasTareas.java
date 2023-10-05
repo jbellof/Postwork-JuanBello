@@ -1,8 +1,6 @@
 package Lista;
-
 import Lista.modelo.ListaTareas;
 import Lista.modelo.Tarea;
-
 import java.io.*;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -10,12 +8,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.charset.Charset;
 public class ListasTareas implements Serializable {
     private List<ListaTareas> listasDeTareas = new ArrayList<>();
@@ -211,47 +206,6 @@ public class ListasTareas implements Serializable {
 
 
 
-    public void actualizarListaTareas() {
-        mostrarListasTareas();
-        System.out.print("Seleccione una lista por su índice: ");
-        int indiceLista = lector.leerOpcion();
-
-        ListaTareas listaActualizar = obtenerListaTareas(indiceLista);
-
-        if (listaActualizar != null) {
-            System.out.print("Nueva tarea: ");
-            String nuevaTarea = lector.leerTexto();
-            Date fechaActual = new Date();
-            System.out.println("Fecha de actualizacion:"+fechaActual);
-            System.out.println("Ingrese el estado (true/false) para la variable 'realizada':");
-            String entradaUsuario = lector.leerTexto();
-            boolean realizada = Boolean.parseBoolean(entradaUsuario);
-            System.out.println("El estado de la tarea es"+realizada);
-
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-
-            System.out.println("Ingrese la fecha de finalizar la tarea (dd/MM/yyyy):");
-            String fechaTerminada = lector.leerTexto();
-            Date fechaFin = null;
-            try {
-                // Intenta analizar la cadena de fecha ingresada en un objeto Date
-                fechaFin = formato.parse(fechaTerminada);
-
-                // La fecha se ha analizado correctamente
-                System.out.println("Fecha ingresada: " + formato.format(fechaFin));
-            } catch (ParseException e) {
-                // Manejo de error si la entrada no se pudo analizar como una fecha válida
-                System.out.println("La entrada no es una fecha válida. Asegúrese de seguir el formato dd/MM/yyyy.");
-            }
-
-            Tarea tarea = new Tarea(nuevaTarea,fechaActual,realizada,fechaFin);
-
-            listaActualizar.agregarTarea(tarea);
-            System.out.println("Tarea agregada a la lista '" + listaActualizar.getNombre() + "'.");
-        } else {
-            System.out.println("Lista no encontrada.");
-        }
-    }
 
     public void eliminarListaTareas() {
         mostrarListasTareas();
@@ -318,7 +272,7 @@ public class ListasTareas implements Serializable {
                     // Escribir las tareas de la lista en el archivo
                     List<Tarea> tareas = listaGuardar.obtenerTareas();
 
-                    // Aquí está la modificación
+
                     for (int i = 0; i < tareas.size(); i++) {
                         Tarea tarea = tareas.get(i);
                         bufferedWriter.newLine();
@@ -328,7 +282,7 @@ public class ListasTareas implements Serializable {
                         bufferedWriter.newLine();
                         bufferedWriter.write("  Realizada: " + (tarea.isRealizada() ? "Tarea completada" : "Tarea pendiente"));
                         bufferedWriter.newLine();
-                        bufferedWriter.write("  Fecha de realización: " + (tarea.isRealizada() ? formatoFecha.format(tarea.getFechaRealizacion()) : "N/A"));
+                        bufferedWriter.write("  Fecha de realización: " + (tarea.isRealizada() ? formatoFecha.format(tarea.getFechaRealizacion()) : "Pendiente por terminar"));
                         bufferedWriter.newLine();
                         bufferedWriter.newLine();
                     }
@@ -344,20 +298,48 @@ public class ListasTareas implements Serializable {
             System.out.println("Error al guardar la lista de tareas: " + e.getMessage());
         }
     }
+    public void cargarListaTareasDesdeArchivo(String nombreArchivo) {
+        try (FileReader reader = new FileReader(nombreArchivo, Charset.forName("utf-8"));
+             BufferedReader bufferedReader = new BufferedReader(reader)) {
 
+            String linea;
+            String nombreLista = null;
+            Date fechaCreacion = null;
+            ListaTareas listaCargada = null;
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
 
+            while ((linea = bufferedReader.readLine()) != null) {
+                if (linea.startsWith("Nombre de la lista: ")) {
+                    nombreLista = linea.substring("Nombre de la lista: ".length());
+                } else if (linea.startsWith("Fecha de creación: ")) {
+                    fechaCreacion = formatoFecha.parse(linea.substring("Fecha de creación: ".length()));
+                    listaCargada = new ListaTareas(nombreLista, fechaCreacion);
+                } else if (linea.startsWith("- Nombre de la Tarea: ")) {
+                    String nombreTarea = linea.substring("- Nombre de la Tarea: ".length());
+                    Date fechaTarea = formatoFecha.parse(bufferedReader.readLine().substring("  Fecha de creación: ".length()));
+                    boolean realizada = bufferedReader.readLine().contains("Tarea completada");
+                    Date fechaRealizacion = null;
+                    if (realizada) {
+                        fechaRealizacion = formatoFecha.parse(bufferedReader.readLine().substring("  Fecha de realización: ".length()));
+                    }
 
-    // Método para cargar una instancia de ListaTareas desde un archivo
-    public static ListasTareas cargarListaTareas() {
-        ListasTareas listaTareas = null;
-        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("listaTareas.txt"))) {
-            salida.writeObject(listaTareas);
-            System.out.println("Lista de tareas guardada exitosamente.");
+                    // Crear y agregar la tarea a la lista cargada
+                    Tarea tarea = new Tarea(nombreTarea, fechaTarea, realizada, fechaRealizacion);
+                    listaCargada.agregarTarea(tarea);
+                }
+            }
+
+            if (listaCargada != null) {
+                agregarListaTareas(listaCargada);
+                System.out.println("Lista de tareas cargada correctamente desde el archivo '" + nombreArchivo + "'.");
+            } else {
+                System.out.println("El archivo no contiene datos válidos para una lista de tareas.");
+            }
         } catch (IOException e) {
-            System.out.println("Error al guardar la lista de tareas: " + e.getMessage());
+            System.out.println("Error al cargar la lista de tareas desde el archivo: " + e.getMessage());
+        } catch (ParseException e) {
+            System.out.println("Error al parsear las fechas desde el archivo: " + e.getMessage());
         }
-        return listaTareas;
     }
-
 
 }
