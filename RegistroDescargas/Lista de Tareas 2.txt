@@ -1,0 +1,20 @@
+Nombre de la lista: Lista de Tareas 2
+Fecha de creación:05/10/2023
+
+- Nombre de la Tarea: Comprar víveres
+  Fecha de creación: 05/10/2023
+  Realizada: Tarea pendiente
+  Fecha de realización: N/A
+
+
+- Nombre de la Tarea: Pagar facturas
+  Fecha de creación: 05/10/2023
+  Realizada: Tarea completada
+  Fecha de realización: 31/10/2023
+
+
+- Nombre de la Tarea: Ir a Correr
+  Fecha de creación: 05/10/2023
+  Realizada: Tarea pendiente
+  Fecha de realización: N/A
+

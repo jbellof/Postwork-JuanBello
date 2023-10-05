@@ -1,0 +1,20 @@
+Nombre de la lista: Pendientes
+Fecha de creación:05/10/2023
+
+- Nombre de la Tarea: comprar carne
+  Fecha de creación: 05/10/2023
+  Realizada: Tarea completada
+  Fecha de realización: 05/10/2023
+
+
+- Nombre de la Tarea: correr en la mañana 
+  Fecha de creación: 05/10/2023
+  Realizada: Tarea pendiente
+  Fecha de realización: Pendiente por terminar
+
+
+- Nombre de la Tarea: dormir
+  Fecha de creación: 05/10/2023
+  Realizada: Tarea completada
+  Fecha de realización: 05/10/2023
+

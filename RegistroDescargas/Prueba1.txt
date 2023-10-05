@@ -1,0 +1,14 @@
+Nombre de la lista: Prueba1
+Fecha de creación:05/10/2023
+
+- Nombre de la Tarea: tarea1
+  Fecha de creación: 05/10/2023
+  Realizada: Tarea pendiente
+  Fecha de realización: N/A
+
+
+- Nombre de la Tarea: tarea2
+  Fecha de creación: 05/10/2023
+  Realizada: Tarea pendiente
+  Fecha de realización: N/A
+
